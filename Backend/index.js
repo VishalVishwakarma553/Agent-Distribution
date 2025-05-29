@@ -10,15 +10,13 @@ import assigningListRoute from "./routes/assignedList.route.js"
 dotenv.config()
 
 const app = express()
+app.use(cookieParser())
+app.use(express.json())
 const corsoption = {
     origin:"http://localhost:5173",
-    credentials:true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    credentials: true
 }
 app.use(cors(corsoption))
-app.use(express.json())
-app.use(cookieParser())
 
 //api's
 app.use("/api/v1/user", authRoutes)

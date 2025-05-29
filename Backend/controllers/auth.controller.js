@@ -4,24 +4,19 @@ import jwt from "jsonwebtoken";
 
 export const signUp = async (req, res) => {
   try {
-    console.log("Enter in signup")
     const { Name, Email, Password } = req.body;
-    console.log(Name, Email, Password)
     if (!Name || !Email || !Password) {
       return res.status(400).json("All fields are required");
     }
     //Checking user already exist
     const userExistence = await User.findOne({ Email });
-    console.log(userExistence)
     if (userExistence) {
       return res.status(401).json({
         message: "User already exist with this email",
       });
     }
     //Hashing the password
-    console.log("Going to hash")
     const hashedPassword = await bcrypt.hash(Password, 10);
-    console.log(hashedPassword)
     const newUser = new User({
       Name,
       Email,
@@ -33,7 +28,6 @@ export const signUp = async (req, res) => {
         messaage: "Internal Server Error",
       });
     }
-    console.log(newUser)
     //generating token through jsonwebtoken
     const token = await jwt.sign(
       { userId: newUser._id },
@@ -44,9 +38,10 @@ export const signUp = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      })
+        httpOnly: true, // prevent XSS attacks cross-site scripting attacks
+        sameSite: "none",
+        secure: true,
+      }) 
       .json({
         message: "User created successfully",
         user: newUser,
@@ -89,7 +84,12 @@ export const login = async (req, res) => {
     //Send response
     return res
       .status(200)
-      .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000 })
+      .cookie("token", token, {
+        maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true, // prevent XSS attacks cross-site scripting attacks
+        sameSite: "none",
+        secure: true,
+      }) 
       .json({
         message: "User logged in successfully",
         user: userExistence,
