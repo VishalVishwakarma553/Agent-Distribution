@@ -3,6 +3,7 @@ import { useState } from "react";
 import axioInstance from "../lib/axiosInstance";
 import toast from "react-hot-toast";
 import { AppStore } from "../Store/AppStore";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formContent, setFormContent] = useState({
@@ -10,7 +11,7 @@ const Login = () => {
     Password: "",
   });
   const {user,setUser} = useContext(AppStore)
-
+  const navigate = useNavigate()
   const onchangeHandler = (e) => {
     setFormContent({ ...formContent, [e.target.name]: e.target.value });
   };
@@ -21,6 +22,7 @@ const Login = () => {
       if (res?.data?.success) {
         localStorage.setItem("User", res.data.user);
         setUser(res.data.user)
+        navigate("/")
         toast.success(res?.data?.message, {
           style: {
             border: "1px solid #713200",
@@ -86,6 +88,7 @@ const Login = () => {
                 className="w-full p-2 outline-1 outline-gray-400 rounded-md focus:ring-2 focus:ring-gray-600 duration-150 text-gray-800"
               />
             </label>
+            <p className="text-gray-600">Don't have an account  <Link to="/signup" className="text-blue-500 underline">Sign up</Link></p>
             <button className="w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 cursor-pointer">
               Submit
             </button>

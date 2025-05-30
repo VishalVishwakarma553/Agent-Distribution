@@ -37,6 +37,6 @@ export const List = async(req, res) => {
         }
         return res.status(200).json({message: "List fetched successfully", List:list, success: true})
     }catch(error){
-        return res.status(500),json({message:"Internal server error"})
+        return res.status(500).json({message:"Internal server error"})
     }
 }
