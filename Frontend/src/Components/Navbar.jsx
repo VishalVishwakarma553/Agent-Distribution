@@ -7,7 +7,6 @@ import * as XLSX from "xlsx";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
-
   const { agent, setUser } = useContext(AppStore);
   const navigate = useNavigate();
   //File handling
@@ -19,8 +18,20 @@ const Navbar = () => {
     const fileExtension = file.name.split(".").pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
-      //todo: add toast
-      // setError("Invalid file format. Please upload a CSV, XLSX, or XLS file.");
+      toast.error(
+        "Invalid file format. Please upload a CSV, XLSX, or XLS file.",
+        {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        }
+      );
       return;
     }
 
@@ -64,8 +75,17 @@ const Navbar = () => {
             List: List,
           });
         } catch (error) {
-          // todo:Add Toast
-          console.log(error);
+          toast.error(error?.res?.data, {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
         }
       };
       const processData = async () => {
@@ -78,19 +98,29 @@ const Navbar = () => {
 
           await Promise.all(promises);
           toast.success("All data distributed successfully", {
-          style: {
-            border: "1px solid #713200",
-            padding: "16px",
-            color: "#713200",
-          },
-          iconTheme: {
-            primary: "#713200",
-            secondary: "#FFFAEE",
-          },
-        });
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
           // todo:Tost here
         } catch (error) {
-          console.error("Error distributing data:", error);
+          toast.error(error?.res?.data, {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#713200",
+            },
+            iconTheme: {
+              primary: "#713200",
+              secondary: "#FFFAEE",
+            },
+          });
         }
       };
       processData();
@@ -99,13 +129,13 @@ const Navbar = () => {
   };
 
   //Logout
-  const handleLogout = async() => {
-    try{
-      const res = await axioInstance.get("/user/logout")
+  const handleLogout = async () => {
+    try {
+      const res = await axioInstance.get("/user/logout");
       if (res?.data?.success) {
-        localStorage.removeItem("User")
-        setUser(null)
-        navigate("/login")
+        localStorage.removeItem("User");
+        setUser(null);
+        navigate("/login");
         toast.success(res?.data?.message, {
           style: {
             border: "1px solid #713200",
@@ -118,7 +148,7 @@ const Navbar = () => {
           },
         });
       }
-    }catch(error){
+    } catch (error) {
       toast.error(error?.res?.data, {
         style: {
           border: "1px solid #713200",
@@ -131,9 +161,9 @@ const Navbar = () => {
         },
       });
     }
-  } 
+  };
 
-  //for mobile view 
+  //for mobile view
   const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef();
 
@@ -157,7 +187,7 @@ const Navbar = () => {
 
   return (
     <>
-    <div className="fixed inset-0 z-50 bg-white h-16 px-4 flex items-center justify-between shadow-md border-b border-gray-200">
+      <div className="fixed inset-0 z-50 bg-white h-16 px-4 flex items-center justify-between shadow-md border-b border-gray-200">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
 
         {/* Desktop Menu */}
@@ -185,7 +215,10 @@ const Navbar = () => {
             </label>
           </li>
           <li>
-            <button className="flex items-center p-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-md cursor-pointer" onClick={handleLogout}>
+            <button
+              className="flex items-center p-4 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-md cursor-pointer"
+              onClick={handleLogout}
+            >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
             </button>
@@ -198,10 +231,7 @@ const Navbar = () => {
             onClick={() => setIsOpen(!isOpen)}
             className="text-gray-800 text-2xl font-bold cursor-pointer hover:text-xl"
           >
-            {
-              isOpen? <p>&#10006;</p>  : <p>&#9776;</p> 
-            }
-            
+            {isOpen ? <p>&#10006;</p> : <p>&#9776;</p>}
           </button>
         </div>
       </div>
@@ -262,7 +292,7 @@ const Navbar = () => {
                 className="flex items-center font-semibold text-red-500 cursor-pointer hover:underline"
                 onClick={() => {
                   setIsOpen(false);
-                  handleLogout()
+                  handleLogout();
                 }}
               >
                 <LogOut className="w-4 h-4 mr-2 " />
@@ -272,7 +302,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      </>
+    </>
   );
 };
 
