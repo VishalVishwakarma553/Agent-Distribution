@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./HomePage";
 import Navbar from "./Navbar";
@@ -10,15 +10,23 @@ import { useContext } from "react";
 import { AppStore } from "../Store/AppStore";
 
 const AppContent = () => {
-    const location = useLocation();
+  const location = useLocation();
   const isAuthPage = ["/login", "/signup"].includes(location.pathname);
-  const { user } = useContext(AppStore)|| localStorage.getItem("User");
+  const {setUser} = useContext(AppStore)
+  const user = JSON.parse(localStorage.getItem("User"));
+  useEffect(() => {
+    setUser(user)
+  }, [])
+
   return (
     <>
       {!isAuthPage && <Navbar />}
       <main className={isAuthPage ? "" : "pt-16"}>
         <Routes>
-          <Route path="/" element={user ? <HomePage /> : <Navigate to="/login"></Navigate> } />
+          <Route
+            path="/"
+            element={user ? <HomePage /> : <Navigate to="/login"></Navigate>}
+          />
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route

@@ -1,12 +1,57 @@
-# React + Vite
+# 🧑‍💼 Agent Distribution – Distribute tasks and notes within different agent
+**Instructions to use**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Create a new user by signing up
+- Facility to add different agent
+- Upload excel file to distrbute the tasks among those agents
 
-Currently, two official plugins are available:
+## 📦 Installation & Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you begin, make sure you have **Node.js**, **npm**, and **MongoDB** installed.
 
-## Expanding the ESLint configuration
+### 🔧 Clone the Repository
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+git clone https://github.com/VishalVishwakarma553/Agent-Distribution
+cd Agent-Distribution
+## 🛠️ Backend Setup
+
+1. **Navigate to the backend directory:**
+   ```bash
+   cd Backend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   Create a `.env` file in the backend directory with the following:
+   ```env
+   PORT=4000
+   MONGODB_URI=your_mongodb_connection_string
+   SECRET_KEY=your_jwt_secret
+   ```
+
+4. **Start the server:**
+   ```bash
+   npm run dev
+   ```
+
+## 💻 Frontend Setup
+
+1. **Navigate to the frontend directory:**
+   ```bash
+   cd ./Frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server:**
+   ```bash
+   npm run dev
+   ```

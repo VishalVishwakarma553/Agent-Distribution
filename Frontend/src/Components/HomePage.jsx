@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import usegetAllAgent from "../customHook/usegetAllAgent";
 import { AppStore } from "../Store/AppStore";
-import { Loader } from "lucide-react";
+import { Loader, Trash } from "lucide-react";
 const HomePage = () => {
   const { agent, allAgentLoading } = useContext(AppStore);
   const navigate = useNavigate();
   usegetAllAgent();
+  // const handleDelete = async()
   if (allAgentLoading) {
     return (
       <div className="w-sreen h-screen flex justify-center items-center">
@@ -34,11 +35,11 @@ const HomePage = () => {
       </button>
     </div>
   ) : (
-    <div className="grid grid-cols-1 gap-4 p-6">
+    <div className="grid grid-cols-1 gap-4 p-6 ">
       {agent.map((agent) => (
         <div
           key={agent._id}
-          className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
+          className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white relative"
         >
           <div className="space-y-2">
             <h1 className="text-xl font-semibold text-gray-800">
@@ -56,8 +57,9 @@ const HomePage = () => {
               </p>
             </div>
           </div>
+          <button  className="absolute right-3 top-3 text-gray-800 cursor-pointer hover:text-gray-900 "><Trash className="w-6 h-6 hover:w-5.5 hover:h-5.5 duration-150" /></button>
           <Link to={`/assign/${agent._id}`} className="mt-4 md:mt-0">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 cursor-pointer">
               See Assigned List
             </button>
           </Link>

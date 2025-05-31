@@ -120,7 +120,7 @@ const AddAgent = () => {
 
           <button
             type="submit"
-            className="w-full py-3 mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg rounded-lg transition-all duration-200"
+            className="w-full py-3 mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg rounded-lg transition-all duration-200 cursor-pointer"
           >
             Submit
           </button>

@@ -20,7 +20,7 @@ const Login = () => {
     try {
       const res = await axioInstance.post("/user/login", formContent);
       if (res?.data?.success) {
-        localStorage.setItem("User", res.data.user);
+        localStorage.setItem("User", JSON.stringify(res.data.user));
         setUser(res.data.user)
         navigate("/")
         toast.success(res?.data?.message, {
