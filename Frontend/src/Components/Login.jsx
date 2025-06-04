@@ -17,6 +17,20 @@ const Login = () => {
   };
   const onHandleSubmit = async (e) => {
     e.preventDefault();
+    if(!formContent.Email || formContent.Password){
+      toast.error("All fields are required", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
+      return
+    }
     try {
       const res = await axioInstance.post("/user/login", formContent);
       if (res?.data?.success) {

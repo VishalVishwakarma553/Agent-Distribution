@@ -12,11 +12,26 @@ const Signup = () => {
   const {setUser} = useContext(AppStore)
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if(!formData.Name || !formData.Email || formData.Password){
+      toast.error("All fields are required", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
+      return
+    }
     try {
       const res = await axioInstance.post("/user/signup", formData);
       if (res?.data?.success) {
-        localStorage.setItem("User", res.data.user)
+        localStorage.setItem("User", JSON.stringify(res.data.user))
         setUser(res.data.user)
+        navigate("/")
         toast.success(res?.data?.message, {
           style: {
             border: "1px solid #713200",

@@ -8,8 +8,41 @@ const AddAgent = () => {
     Mobile: "",
     Password: "",
   });
+  const validateMobileNumber = (number) => {
+    const sanitized = number.replace(/[\s\-]/g, '');
+    const regex = /^(\+?\d{1,3})?(\d{10})$/;
+    return regex.test(sanitized);
+  };
   const onHandleSubmit = async (e) => {
     e.preventDefault();
+    if(!agentDetail.Name || !agentDetail.Email || agentDetail.Mobile || agentDetail.Password){
+      toast.error("All fields are required", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
+      return
+    }
+    if (!validateMobileNumber(mobile)) {
+      toast.error("Mobile number is not valid", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
+      return
+    }
     try {
       const res = await axioInstance.post("/agent/addAgent", agentDetail);
       console.log(res);
