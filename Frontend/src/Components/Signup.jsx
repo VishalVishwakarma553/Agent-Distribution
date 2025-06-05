@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import axioInstance from "../lib/axiosInstance";
 import { AppStore } from "../Store/AppStore";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const Signup = () => {
     Email: "",
     Password: "",
   });
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const {setUser} = useContext(AppStore)
   const onSubmitHandler = async (e) => {
@@ -29,6 +31,7 @@ const Signup = () => {
       return
     }
     try {
+      setLoading(true)
       const res = await axioInstance.post("/user/signup", formData);
       if (res?.data?.success) {
         localStorage.setItem("User", JSON.stringify(res.data.user))
@@ -59,6 +62,8 @@ const Signup = () => {
           secondary: "#FFFAEE",
         },
       });
+    }finally{
+      setLoading(false)
     }
   };
   const onChangeHandler = (e) => {
@@ -118,9 +123,9 @@ const Signup = () => {
               className="w-full p-2 outline-1 outline-gray-400 rounded-md focus:ring-2 focus:ring-gray-600 duration-150 text-gray-800"
             />
           </label>
-          <p className="text-xs text-gray-400 font-medium">Please wait it may take sometime..</p>
-          <button className="w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 cursor-pointer">
-            Submit
+          <button className={`flex items-center justify-center gap-2 w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 ${loading? "cursor-not-allowed": "cursor-pointer" }`}>
+            <Loader className={`${loading ? "inline animate-spin":"hidden"}`}/>
+            {loading?"Please wait..." :"Submit"}
           </button>
         </form>
       </div>

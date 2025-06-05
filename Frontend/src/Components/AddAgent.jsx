@@ -4,10 +4,11 @@ import axioInstance from "../lib/axiosInstance";
 import { useContext } from "react";
 import { AppStore } from "../Store/AppStore";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 const AddAgent = () => {
-  const {user} = useContext(AppStore)
+  const { user } = useContext(AppStore);
   const navigate = useNavigate();
-  
+  const [loading, setLoading] = useState(false);
   const [agentDetail, setAgentDetail] = useState({
     Name: "",
     Email: "",
@@ -16,12 +17,17 @@ const AddAgent = () => {
     CreatedBy: user._id,
   });
   const validateMobileNumber = (number) => {
-  const regex = /^\d{10}$/;  // Only digits, exactly 10
-  return regex.test(number);
-};
+    const regex = /^\d{10}$/; // Only digits, exactly 10
+    return regex.test(number);
+  };
   const onHandleSubmit = async (e) => {
     e.preventDefault();
-    if(!agentDetail.Name || !agentDetail.Email || !agentDetail.Mobile || !agentDetail.Password){
+    if (
+      !agentDetail.Name ||
+      !agentDetail.Email ||
+      !agentDetail.Mobile ||
+      !agentDetail.Password
+    ) {
       toast.error("All fields are required", {
         style: {
           border: "1px solid #713200",
@@ -33,7 +39,7 @@ const AddAgent = () => {
           secondary: "#FFFAEE",
         },
       });
-      return
+      return;
     }
     if (!validateMobileNumber(agentDetail.Mobile)) {
       toast.error("Mobile number is not valid", {
@@ -47,9 +53,10 @@ const AddAgent = () => {
           secondary: "#FFFAEE",
         },
       });
-      return
+      return;
     }
     try {
+      setLoading(true);
       const res = await axioInstance.post("/agent/addAgent", agentDetail);
       console.log(res);
       if (res?.data?.success) {
@@ -65,7 +72,7 @@ const AddAgent = () => {
           },
         });
       }
-      navigate("/")
+      navigate("/");
     } catch (error) {
       toast.error(error?.res?.data, {
         style: {
@@ -78,9 +85,9 @@ const AddAgent = () => {
           secondary: "#FFFAEE",
         },
       });
-      console.log(error);
+    } finally {
+      setLoading(false);
     }
-
   };
   const onchangeHandler = (e) => {
     setAgentDetail({ ...agentDetail, [e.target.name]: e.target.value });
@@ -160,10 +167,14 @@ const AddAgent = () => {
           </div>
 
           <button
-            type="submit"
-            className="w-full py-3 mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg rounded-lg transition-all duration-200 cursor-pointer"
+            className={`flex items-center justify-center gap-2 w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 ${
+              loading ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
-            Submit
+            <Loader
+              className={`${loading ? "inline animate-spin" : "hidden"}`}
+            />
+            {loading ? "Please wait..." : "Submit"}
           </button>
         </form>
       </div>

@@ -4,8 +4,10 @@ import axioInstance from "../lib/axiosInstance";
 import toast from "react-hot-toast";
 import { AppStore } from "../Store/AppStore";
 import { Link, useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false)
   const [formContent, setFormContent] = useState({
     Email: "",
     Password: "",
@@ -32,6 +34,7 @@ const Login = () => {
       return
     }
     try {
+      setLoading(true)
       const res = await axioInstance.post("/user/login", formContent);
       if (res?.data?.success) {
         localStorage.setItem("User", JSON.stringify(res.data.user));
@@ -61,6 +64,8 @@ const Login = () => {
           secondary: "#FFFAEE",
         },
       });
+    }finally{
+      setLoading(false)
     }
   };
   return (
@@ -103,10 +108,10 @@ const Login = () => {
               />
             </label>
             <p className="text-gray-600">Don't have an account  <Link to="/signup" className="text-blue-500 underline">Sign up</Link></p>
-            <p className="text-xs text-gray-400 font-medium">Please wait it may take sometime..</p>
-            <button className="w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 cursor-pointer">
-              Submit
-            </button>
+            <button className={`flex items-center justify-center gap-2 w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 ${loading? "cursor-not-allowed": "cursor-pointer" }`}>
+            <Loader className={`${loading ? "inline animate-spin":"hidden"}`}/>
+            {loading?"Please wait..." :"Submit"}
+          </button>
           </form>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { LogOut } from "lucide-react";
+import { Loader, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AppStore } from "../Store/AppStore";
 import axioInstance from "../lib/axiosInstance";
@@ -8,9 +8,12 @@ import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { agent, setUser } = useContext(AppStore);
+  // const [logoutLoading, setLogoutLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //File handling
   const handleFileUpload = (e) => {
+    setLoading(false);
     const file = e.target.files[0];
     if (!file) return;
 
@@ -51,7 +54,7 @@ const Navbar = () => {
 
         if (!row.FirstName || !row.Phone || !row.Notes) {
           toast.error(
-             "file is missing or empty required fields: FirstName, Phone, or Notes",
+            "file is missing or empty required fields: FirstName, Phone, or Notes",
             {
               style: {
                 border: "1px solid #713200",
@@ -64,7 +67,7 @@ const Navbar = () => {
               },
             }
           );
-          return; 
+          return;
         }
 
         validatedData.push({
@@ -144,8 +147,10 @@ const Navbar = () => {
         }
       };
       processData();
+      
     };
     reader.readAsArrayBuffer(file);
+    setLoading(false);
   };
 
   //Logout
@@ -229,8 +234,12 @@ const Navbar = () => {
                 className="hidden"
                 onChange={handleFileUpload}
               />
-              <span className="px-4 py-2.5 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md cursor-pointer">
-                Upload File
+              <span
+                className={`px-4 py-2.5 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md ${
+                  loading ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+              >
+                {loading ? "Uploading.." : "Upload File"}
               </span>
             </label>
           </li>

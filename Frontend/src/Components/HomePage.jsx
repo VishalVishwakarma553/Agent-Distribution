@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppStore } from "../Store/AppStore";
 import { Loader, Trash } from "lucide-react";
@@ -6,12 +6,14 @@ import axioInstance from "../lib/axiosInstance";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 const HomePage = () => {
-  const { agent, allAgentLoading, setAgent, setAllAgentLoading, user } =
+  const { agent, setAgent, user } =
     useContext(AppStore);
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
   useEffect(() => {
     const fetchAgent = async () => {
       try {
+        setLoading(true)
         if (!user?._id) {
           return;
         }
@@ -34,7 +36,7 @@ const HomePage = () => {
           },
         });
       } finally {
-        setAllAgentLoading(false);
+        setLoading(false);
       }
     };
     fetchAgent();
@@ -78,7 +80,7 @@ const HomePage = () => {
       });
     }
   };
-  if (allAgentLoading) {
+  if (loading) {
     return (
       <div className="w-sreen h-screen flex justify-center items-center">
         <div className="flex flex-col items-center">
