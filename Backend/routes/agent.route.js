@@ -4,5 +4,5 @@ const router = express.Router()
 
 router.post("/addAgent", AddAgent)
 router.post("/getAgent", getAllAgent)
-router.delete("/deleteAgent", deleteAgent)
+router.post("/deleteAgent", deleteAgent)
 export default router

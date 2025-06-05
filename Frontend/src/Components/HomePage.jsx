@@ -1,18 +1,49 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import usegetAllAgent from "../customHook/usegetAllAgent";
 import { AppStore } from "../Store/AppStore";
 import { Loader, Trash } from "lucide-react";
 import axioInstance from "../lib/axiosInstance";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 const HomePage = () => {
-  const { agent, allAgentLoading } = useContext(AppStore);
+  const { agent, allAgentLoading, setAgent, setAllAgentLoading, user } =
+    useContext(AppStore);
   const navigate = useNavigate();
-  usegetAllAgent();
-  // const handleDelete = async()
+  useEffect(() => {
+    const fetchAgent = async () => {
+      try {
+        if (!user?._id) {
+          return;
+        }
+        const res = await axioInstance.post("/agent/getAgent", {
+          CreatedBy: user._id,
+        });
+        if (res?.data?.success) {
+          setAgent(res?.data?.Agent);
+        }
+      } catch (error) {
+        toast.error(error.res.data, {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        });
+      } finally {
+        setAllAgentLoading(false);
+      }
+    };
+    fetchAgent();
+  }, [user._id]);
   const HandleDeleteAgent = async (agentid) => {
     try {
-      const res = await axioInstance.delete("/agent/deleteAgent", agentid);
+      const res = await axioInstance.post("/agent/deleteAgent", {
+        agentid: agentid,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message, {
           style: {
@@ -26,8 +57,15 @@ const HomePage = () => {
           },
         });
       }
+      // Fetch updated agent list
+      const updatedAgents = await axioInstance.post("/agent/getAgent", {
+        CreatedBy: user._id,
+      });
+      if (updatedAgents?.data?.success) {
+        setAgent(updatedAgents.data.Agent);
+      }
     } catch (error) {
-      toast.error(error?.res?.data, {
+      toast.error(error?.res?.data?.message, {
         style: {
           border: "1px solid #713200",
           padding: "16px",

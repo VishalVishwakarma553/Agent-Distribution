@@ -118,6 +118,7 @@ const Signup = () => {
               className="w-full p-2 outline-1 outline-gray-400 rounded-md focus:ring-2 focus:ring-gray-600 duration-150 text-gray-800"
             />
           </label>
+          <p className="text-xs text-gray-400 font-medium">Please wait it may take sometime..</p>
           <button className="w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 cursor-pointer">
             Submit
           </button>

@@ -103,6 +103,7 @@ const Login = () => {
               />
             </label>
             <p className="text-gray-600">Don't have an account  <Link to="/signup" className="text-blue-500 underline">Sign up</Link></p>
+            <p className="text-xs text-gray-400 font-medium">Please wait it may take sometime..</p>
             <button className="w-full text-center text-xl text-gray-950 font-bold p-3 bg-green-500 rounded-lg hover:bg-green-700 duration-150 cursor-pointer">
               Submit
             </button>

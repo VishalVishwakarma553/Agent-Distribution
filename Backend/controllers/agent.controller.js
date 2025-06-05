@@ -67,7 +67,7 @@ export const getAllAgent = async(req, res) => {
 
 //Delete agent
 export const deleteAgent = async(req, res) => {
-    try{    
+    try{
         const {agentid} = req.body
         if(!agentid){
             return res.status(400).json({message: "Agent information is missing"})
