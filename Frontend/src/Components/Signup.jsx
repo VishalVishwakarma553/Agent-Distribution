@@ -12,7 +12,7 @@ const Signup = () => {
   const {setUser} = useContext(AppStore)
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if(!formData.Name || !formData.Email || formData.Password){
+    if(!formData.Name || !formData.Email || !formData.Password){
       toast.error("All fields are required", {
         style: {
           border: "1px solid #713200",
