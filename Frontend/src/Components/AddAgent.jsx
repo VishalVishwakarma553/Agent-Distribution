@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import axioInstance from "../lib/axiosInstance";
+import { useContext } from "react";
+import { AppStore } from "../Store/AppStore";
+import { useNavigate } from "react-router-dom";
 const AddAgent = () => {
+  const {user} = useContext(AppStore)
+  const navigate = useNavigate();
+  
   const [agentDetail, setAgentDetail] = useState({
     Name: "",
     Email: "",
     Mobile: "",
     Password: "",
+    CreatedBy: user._id,
   });
   const validateMobileNumber = (number) => {
-    const sanitized = number.replace(/[\s\-]/g, '');
-    const regex = /^(\+?\d{1,3})?(\d{10})$/;
-    return regex.test(sanitized);
-  };
+  const regex = /^\d{10}$/;  // Only digits, exactly 10
+  return regex.test(number);
+};
   const onHandleSubmit = async (e) => {
     e.preventDefault();
-    if(!agentDetail.Name || !agentDetail.Email || agentDetail.Mobile || agentDetail.Password){
+    if(!agentDetail.Name || !agentDetail.Email || !agentDetail.Mobile || !agentDetail.Password){
       toast.error("All fields are required", {
         style: {
           border: "1px solid #713200",
@@ -29,7 +35,7 @@ const AddAgent = () => {
       });
       return
     }
-    if (!validateMobileNumber(mobile)) {
+    if (!validateMobileNumber(agentDetail.Mobile)) {
       toast.error("Mobile number is not valid", {
         style: {
           border: "1px solid #713200",
@@ -59,6 +65,7 @@ const AddAgent = () => {
           },
         });
       }
+      navigate("/")
     } catch (error) {
       toast.error(error?.res?.data, {
         style: {
@@ -73,6 +80,7 @@ const AddAgent = () => {
       });
       console.log(error);
     }
+
   };
   const onchangeHandler = (e) => {
     setAgentDetail({ ...agentDetail, [e.target.name]: e.target.value });

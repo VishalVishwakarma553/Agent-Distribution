@@ -4,6 +4,7 @@ import usegetAllAgent from "../customHook/usegetAllAgent";
 import { AppStore } from "../Store/AppStore";
 import { Loader, Trash } from "lucide-react";
 import axioInstance from "../lib/axiosInstance";
+import toast from "react-hot-toast";
 const HomePage = () => {
   const { agent, allAgentLoading } = useContext(AppStore);
   const navigate = useNavigate();

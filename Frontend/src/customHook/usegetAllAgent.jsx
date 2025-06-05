@@ -4,14 +4,13 @@ import toast from "react-hot-toast";
 import { AppStore } from "../Store/AppStore";
 
 const usegetAllAgent = () => {
-  const { setAgent, setAllAgentLoading } = useContext(AppStore);
+  const { setAgent, setAllAgentLoading, user, agent } = useContext(AppStore);
   useEffect(() => {
     const fetchAgent = async () => {
       try {
-        const res = await axioInstance.get("/agent/getAgent");
+        const res = await axioInstance.post("/agent/getAgent", {CreatedBy: user._id});
         if (res?.data?.success) {
           setAgent(res?.data?.Agent);
-          
         }
       } catch (error) {
         toast.error(error.res.data, {
@@ -30,7 +29,7 @@ const usegetAllAgent = () => {
       }
     };
     fetchAgent();
-  }, []);
+  }, [agent]);
 };
 
 export default usegetAllAgent;

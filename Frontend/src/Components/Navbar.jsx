@@ -43,15 +43,36 @@ const Navbar = () => {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
-      // Optional: Validate required fields
-      const validatedData = jsonData.map((row, index) => {
-        return {
-          FirstName: row.FirstName || "",
-          Phone: row.Phone || "",
-          Notes: row.Notes || "",
-        };
-      });
-      // setData(validatedData);
+      // validating each field in the file
+      let validatedData = [];
+
+      for (let i = 0; i < jsonData.length; i++) {
+        const row = jsonData[i];
+
+        if (!row.FirstName || !row.Phone || !row.Notes) {
+          toast.error(
+             "file is missing or empty required fields: FirstName, Phone, or Notes",
+            {
+              style: {
+                border: "1px solid #713200",
+                padding: "16px",
+                color: "#713200",
+              },
+              iconTheme: {
+                primary: "#713200",
+                secondary: "#FFFAEE",
+              },
+            }
+          );
+          return; 
+        }
+
+        validatedData.push({
+          FirstName: row.FirstName,
+          Phone: row.Phone,
+          Notes: row.Notes,
+        });
+      }
       function distributeItems(items, numberOfMembers) {
         const result = Array.from({ length: numberOfMembers }, () => []);
         const baseCount = Math.floor(items.length / numberOfMembers);
@@ -108,7 +129,6 @@ const Navbar = () => {
               secondary: "#FFFAEE",
             },
           });
-          // todo:Tost here
         } catch (error) {
           toast.error(error?.res?.data, {
             style: {

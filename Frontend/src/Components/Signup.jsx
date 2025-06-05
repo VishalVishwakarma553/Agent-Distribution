@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import axioInstance from "../lib/axiosInstance";
 import { AppStore } from "../Store/AppStore";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Signup = () => {
     Email: "",
     Password: "",
   });
+  const navigate = useNavigate();
   const {setUser} = useContext(AppStore)
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -45,7 +47,8 @@ const Signup = () => {
         });
       }
     } catch (error) {
-      toast.error(error.res.data, {
+      console.log(error)
+      toast.error(error?.res?.data, {
         style: {
           border: "1px solid #713200",
           padding: "16px",
