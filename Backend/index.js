@@ -13,7 +13,7 @@ const app = express()
 app.use(cookieParser())
 app.use(express.json())
 const corsoption = {
-    origin:"https://agent-distribution.vercel.app",
+    origin:"https://agent-distribution.vercel.app", //http://localhost:5173
     credentials: true
 }
 app.use(cors(corsoption))

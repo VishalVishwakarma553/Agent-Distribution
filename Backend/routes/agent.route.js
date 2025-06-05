@@ -3,6 +3,6 @@ import { AddAgent, deleteAgent, getAllAgent } from "../controllers/agent.control
 const router = express.Router()
 
 router.post("/addAgent", AddAgent)
-router.get("/getAgent", getAllAgent)
+router.post("/getAgent", getAllAgent)
 router.delete("/deleteAgent", deleteAgent)
 export default router

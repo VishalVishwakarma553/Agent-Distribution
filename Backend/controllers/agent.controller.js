@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs"
 //Add new aggent
 export const AddAgent = async(req, res) => {
     try{
-        const {Name, Email, Mobile, Password} = req.body
+        const {Name, Email, Mobile, Password, CreatedBy} = req.body
         if(!Email || !Mobile || !Name || !Password){
             return res.status(401).json({
                 message: "All fields are required"
@@ -26,7 +26,8 @@ export const AddAgent = async(req, res) => {
             Name,
             Email,
             Mobile,
-            Password: hashedPassword
+            Password: hashedPassword,
+            CreatedBy
         })
         await newAgent.save()
         if(!newAgent){
@@ -46,7 +47,8 @@ export const AddAgent = async(req, res) => {
 //Get All agent
 export const getAllAgent = async(req, res) => {
     try{
-        const allAgent = await Agent.find()
+        const {CreatedBy} = req.body
+        const allAgent = await Agent.find({CreatedBy})
         if(!allAgent){
             return res.status(400).json({message: "Agent does not found"})
         }
