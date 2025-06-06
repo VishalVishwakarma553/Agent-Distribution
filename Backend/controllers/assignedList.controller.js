@@ -6,16 +6,34 @@ export const distributeList = async(req, res) => {
         if(!agentId || !List){
             return res.status(400).json("Agent id or Assigned list is missing")
         }
-        //Assign list
-        const assign = new AssignedList({
-            agentId,
-            List
-        })
-        await assign.save()
-        if(!assign){
-            return res.status(401).json({message: "Error in distributed list"})
+       // First check if document exists
+        const existingList = await AssignedList.findOne({ agentId });
+
+        let result;
+        let message;
+
+        if (existingList) {
+            // Update existing document
+            result = await AssignedList.findOneAndUpdate(
+                { agentId },
+                { List }, 
+                { new: true }
+            );
+            message = "List updated successfully";
+        } else {
+            // Create new document
+            result = await AssignedList.create({
+                agentId,
+                List
+            });
+            message = "List distributed successfully";
         }
-        return res.status(200).json({message: "List distributed successfully", AssignList: assign, success: true})
+
+        return res.status(200).json({
+            success: true,
+            message,
+            AssignList: result
+        });
     }catch(error) {
         return res.status(500).json({
             message: "Internal server error",
