@@ -13,7 +13,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   //File handling
   const handleFileUpload = (e) => {
-    setLoading(false);
+    setLoading(true);
+
     const file = e.target.files[0];
     if (!file) return;
 
@@ -35,6 +36,7 @@ const Navbar = () => {
           },
         }
       );
+      setLoading(false)
       return;
     }
 
@@ -67,6 +69,7 @@ const Navbar = () => {
               },
             }
           );
+          setLoading(false)
           return;
         }
 
@@ -110,6 +113,8 @@ const Navbar = () => {
               secondary: "#FFFAEE",
             },
           });
+        }finally{
+          setLoading(false)
         }
       };
       const processData = async () => {
@@ -144,13 +149,14 @@ const Navbar = () => {
               secondary: "#FFFAEE",
             },
           });
+        }finally{
+          setLoading(false)
         }
       };
       processData();
       
     };
     reader.readAsArrayBuffer(file);
-    setLoading(false);
   };
 
   //Logout
@@ -312,7 +318,7 @@ const Navbar = () => {
                   }}
                 />
                 <span className="font-semibold text-green-600 cursor-pointer hover:underline">
-                  ⬆️ Upload File
+                  {loading ? "Uploading.." : "⬆️ Upload File"}
                 </span>
               </label>
             </li>
