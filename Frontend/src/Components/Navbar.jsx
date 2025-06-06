@@ -13,6 +13,23 @@ const Navbar = () => {
   const navigate = useNavigate();
   //File handling
   const handleFileUpload = (e) => {
+    if(agent.length <= 0){
+      toast.error(
+        "Please create agent first before uploading",
+        {
+          style: {
+            border: "1px solid #713200",
+            padding: "16px",
+            color: "#713200",
+          },
+          iconTheme: {
+            primary: "#713200",
+            secondary: "#FFFAEE",
+          },
+        }
+      );
+      return
+    }
     setLoading(true);
 
     const file = e.target.files[0];
@@ -238,12 +255,16 @@ const Navbar = () => {
                 type="file"
                 accept=".csv,.xlsx,.xls"
                 className="hidden"
+                disabled={agent.length <= 0}
                 onChange={handleFileUpload}
               />
               <span
-                className={`px-4 py-2.5 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md ${
-                  loading ? "cursor-not-allowed" : "cursor-pointer"
-                }`}
+                className={`px-4 py-2.5 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-md ${agent.length <= 0 ? "cursor-not-allowed ":""} ${
+                  loading ? "cursor-not-allowed" : ""
+                }
+                ${agent.length && !loading? "cursor-pointer": ""}
+                `}
+                
               >
                 {loading ? "Uploading.." : "Upload File"}
               </span>
